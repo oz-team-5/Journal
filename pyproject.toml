@@ -1,0 +1,18 @@
+[project]
+name = "journal"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.135.1",
+    "ruff>=0.15.5",
+    "tortoise-orm[asyncpg]>=1.1.6",
+]
+
+[dependency-groups]
+dev = [
+    "aerich[toml]>=0.8.1",
+    "black>=26.3.0",
+    "ruff>=0.15.5",
+]
