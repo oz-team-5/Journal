@@ -2,6 +2,9 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
 
 ### Python ###
+test_scrap.py
+test_db.sqlite3-shm
+test_db.sqlite3-wal
 uv.lock
 .idea/
 # Byte-compiled / optimized / DLL files
