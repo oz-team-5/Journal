@@ -31,7 +31,9 @@ async def lifespan(app: FastAPI):
     # 이렇게 하면 서버 부팅 속도에 영향을 주지않음
     logger.info("명언 데이터 동기화를 백그라운드에서 시작")
     asyncio.create_task(quote_scraper.fetch_and_save_quotes(max_pages=5))
+from app.api.routers import diary_api
 
+app = FastAPI()
     yield  # 서버 가동 (사용자 요청 수신)
 
     # [종료 시 작업]
@@ -48,6 +50,9 @@ app.include_router(quote.router)
 
 # 5. DB 설정 초기화
 initialize_tortoise(app)
+app.include_router(quote.router, prefix="/api/v1")
+app.include_router(diary_api.router)
+
 
 if __name__ == "__main__":
     # 로컬 개발 환경 실행 설정
