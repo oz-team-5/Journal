@@ -1,5 +1,6 @@
 import random
 from typing import List, Optional
+
 from app.models.quote import Quote
 from app.scraping.quote_scraper import quote_scraper  # 이전에 만든 스크래퍼
 

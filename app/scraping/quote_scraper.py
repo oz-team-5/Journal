@@ -1,9 +1,11 @@
-import re
 import asyncio
-import random
-import httpx
 import logging
+import random
+import re
+
+import httpx
 from bs4 import BeautifulSoup
+
 from app.models.quote import Quote
 
 # 해당 모듈 전용 로거 생성
@@ -13,7 +15,7 @@ logger = logging.getLogger(__name__)
 class QuoteScraper:
     def __init__(self):
         self.base_url = "https://saramro.com/quotes"
-        self.last_page= 0
+        self.last_page = 0
 
     async def fetch_and_save_quotes(self, max_pages: int = 3):
         all_scraped_data = []
@@ -29,22 +31,31 @@ class QuoteScraper:
                 try:
                     response = await client.get(current_url, headers=headers)
                     if response.status_code != 200:
-                        logger.warning(f"{page}페이지 응답 오류 (상태 코드: {response.status_code})")
+                        logger.warning(
+                            f"{page}페이지 응답 오류 (상태 코드: {response.status_code})"
+                        )
                         break
 
                     soup = BeautifulSoup(response.text, "html.parser")
                     rows = soup.select("table tr")
 
                     if not rows:
-                        logger.info(f"{page}페이지에서 더 이상 데이터를 찾을 수 없습니다.")
+                        logger.info(
+                            f"{page}페이지에서 더 이상 데이터를 찾을 수 없습니다."
+                        )
                         break
 
                     for row in rows:
                         td = row.select_one("td")
-                        if not td: continue
+                        if not td:
+                            continue
 
                         raw_text = td.get_text(separator="\n", strip=True)
-                        lines = [line.strip() for line in raw_text.split("\n") if line.strip()]
+                        lines = [
+                            line.strip()
+                            for line in raw_text.split("\n")
+                            if line.strip()
+                        ]
 
                         if len(lines) >= 2:
                             content = lines[0]
@@ -52,17 +63,21 @@ class QuoteScraper:
 
                             # 한글 패턴 검사 (re 모듈 활용)
                             if re.search(r"[가-힣]", content):
-                                all_scraped_data.append({"content": content, "author": author})
+                                all_scraped_data.append(
+                                    {"content": content, "author": author}
+                                )
 
                     # 마지막 스크랩 페이지 저장
                     self.last_page = page
 
                     if page < max_pages:
                         delay = random.uniform(1.0, 2.5)
-                        logger.debug(f"서버 부하 방지를 위해 {delay:.2f}초간 대기합니다.")
+                        logger.debug(
+                            f"서버 부하 방지를 위해 {delay:.2f}초간 대기합니다."
+                        )
                         await asyncio.sleep(delay)
 
-                except Exception as e:
+                except Exception:
                     logger.error(f"{page}페이지 처리 중 예외 발생", exc_info=True)
                     break
 
@@ -72,7 +87,9 @@ class QuoteScraper:
 
         # 중복 확인 및 벌크 저장 로직
         scraped_contents = [item["content"] for item in all_scraped_data]
-        existing_records = await Quote.filter(content__in=scraped_contents).values_list("content", flat=True)
+        existing_records = await Quote.filter(content__in=scraped_contents).values_list(
+            "content", flat=True
+        )
 
         new_quotes = [
             Quote(content=item["content"], author=item["author"])

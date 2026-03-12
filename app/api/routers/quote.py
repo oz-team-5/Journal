@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, status
+
 from app.schemas.quote import QuoteResponse
 from app.services.quote_service import quote_service
 
@@ -15,7 +16,7 @@ async def get_random_quote():
     if not quote:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="조회 가능한 명언이 없습니다. 먼저 동기화를 진행해주세요."
+            detail="조회 가능한 명언이 없습니다. 먼저 동기화를 진행해주세요.",
         )
 
     return quote
@@ -33,11 +34,13 @@ async def sync_quotes(max_pages: int = 3):
         if count == 0:
             return {"message": "이미 최신 상태입니다. 새로 추가된 데이터가 없습니다."}
 
-        return {"message": f"동기화가 완료되었습니다. {count}개의 명언이 새로 추가되었습니다."}
+        return {
+            "message": f"동기화가 완료되었습니다. {count}개의 명언이 새로 추가되었습니다."
+        }
 
     except Exception as e:
         # 동기화 중 발생한 에러를 클라이언트에게 알림
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"동기화 중 오류가 발생했습니다: {str(e)}"
+            detail=f"동기화 중 오류가 발생했습니다: {str(e)}",
         )
