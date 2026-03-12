@@ -1,8 +1,10 @@
-import pytest
-from httpx import AsyncClient, ASGITransport
-from tortoise import Tortoise
-from app.main import app
 import os
+
+import pytest
+from httpx import ASGITransport, AsyncClient
+from tortoise import Tortoise
+
+from app.main import app
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -15,8 +17,7 @@ async def initialize_tests():
 
     # 2. 메모리 대신 '파일'에 DB와 테이블 생성
     await Tortoise.init(
-        db_url=f"sqlite://{db_path}",
-        modules={"models": ["app.models.quote"]}
+        db_url=f"sqlite://{db_path}", modules={"models": ["app.models.quote"]}
     )
     await Tortoise.generate_schemas()
 
@@ -33,8 +34,7 @@ async def initialize_tests():
 async def client():
     # ASGITransport를 통해 FastAPI 앱을 연결합니다.
     async with AsyncClient(
-            transport=ASGITransport(app=app),
-            base_url="http://testserver"
+        transport=ASGITransport(app=app), base_url="http://testserver"
     ) as ac:
         yield ac
 

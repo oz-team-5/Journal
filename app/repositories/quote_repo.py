@@ -1,6 +1,8 @@
-from typing import Optional, List
+from typing import List, Optional
+
 from app.models.quote import Quote
 from app.schemas.quote import QuoteCreate
+
 
 class QuoteRepository:
     """명언 데이터베이스에 직접 접근하는 클래스"""
@@ -24,7 +26,8 @@ class QuoteRepository:
     async def get_random() -> Optional[Quote]:
         """(예시) 랜덤으로 명언 하나를 가져오는 복잡한 로직"""
         # Tortoise ORM의 raw SQL이나 특수 쿼리를 여기에 작성
-        return await Quote.first() # 여기서는 단순화하여 첫 번째 데이터를 반환
+        return await Quote.first()  # 여기서는 단순화하여 첫 번째 데이터를 반환
+
 
 # 싱글톤 패턴으로 인스턴스화하여 제공 (선택 사항)
 quote_repo = QuoteRepository()

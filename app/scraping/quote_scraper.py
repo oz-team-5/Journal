@@ -1,11 +1,13 @@
+import re
+
 import httpx
 from bs4 import BeautifulSoup
-import re
-from app.models.quote import Quote
 
+from app.models.quote import Quote
 
 # repository 패턴을 유지하고 싶다면 quote_repo를 가져와도 되지만,
 # 성능 최적화를 위해 여기서는 ORM 모델(Quote)을 직접 사용하여 Bulk 처리를 합니다.
+
 
 class QuoteScraper:
     def __init__(self):
@@ -41,7 +43,7 @@ class QuoteScraper:
                     author = lines[1].lstrip("-").strip()
 
                     # 한글 판독기! 한글이 포함된 명언만 챙깁니다.
-                    if re.search(r'[가-힣]', content):
+                    if re.search(r"[가-힣]", content):
                         scraped_data.append({"content": content, "author": author})
 
         # =================================================================
@@ -54,7 +56,9 @@ class QuoteScraper:
         scraped_contents = [item["content"] for item in scraped_data]
 
         # 🚨 [최적화 1] DB에 "이 리스트에 있는 명언 중 네가 가진 거 다 불러와!"라고 딱 1번만 질문합니다.
-        existing_records = await Quote.filter(content__in=scraped_contents).values_list("content", flat=True)
+        existing_records = await Quote.filter(content__in=scraped_contents).values_list(
+            "content", flat=True
+        )
 
         # 파이썬 메모리 상에서 겹치는 것을 제외하고 새로운 명언만 박스(new_quotes)에 담습니다.
         new_quotes = []

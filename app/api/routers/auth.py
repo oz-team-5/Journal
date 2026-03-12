@@ -20,7 +20,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/login", response_model=Token, status_code=status.HTTP_200_OK)
 async def user_login(form: Annotated[OAuth2PasswordRequestForm, Depends()]) -> Token:
-    return await login(form.username,form.password)
+    return await login(form.username, form.password)
 
 
 @router.post("/logout", status_code=status.HTTP_200_OK)
@@ -45,6 +45,7 @@ async def signup(request: UserCreate) -> UserResponse:
     )
     return UserResponse(username=user.username, created_at=user.created_at)
 
+
 @router.get("/me")
 async def me(current_user: User = Depends(get_current_user)) -> dict:
     return {
@@ -52,6 +53,7 @@ async def me(current_user: User = Depends(get_current_user)) -> dict:
         "username": current_user.username,
         "created_at": current_user.created_at,
     }
+
 
 @router.get("/check")
 async def check_auth(current_user: User = Depends(get_current_user)) -> dict:
