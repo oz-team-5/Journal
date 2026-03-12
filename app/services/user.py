@@ -1,9 +1,9 @@
 from fastapi import status
 from fastapi.exceptions import HTTPException
 
+from app.core.security import get_password_hash
 from app.models.user import User
 from app.schemas.user import UserUpdate
-from app.services.auth import get_password_hash
 
 
 async def get_users() -> list[User]:

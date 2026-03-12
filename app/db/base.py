@@ -12,7 +12,7 @@ TORTOISE_MODELS = [
     "app.models.question",
     "app.models.user_question",
     "aerich.models",
-    "app.models.auth"
+    "app.models.auth",
 ]
 
 TORTOISE_ORM = {
