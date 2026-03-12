@@ -44,6 +44,8 @@ async def blacklist_token(token: str, user: User) -> None:
     saved = await TokenBlacklist.filter(token=token).exists()
     print("saved after create:", saved)
     #
+
+
 async def get_user_by_id(user_id: int) -> User:
     """ID로 유저 조회"""
     user = await User.get_or_none(id=user_id)
