@@ -7,12 +7,7 @@ from app.core.security import oauth2_scheme
 from app.models.user import User
 from app.schemas.auth import Token
 from app.schemas.user import UserCreate, UserResponse
-from app.services.auth import (
-    blacklist_token,
-    create_user,
-    get_current_user,
-    login,
-)
+from app.services.auth import blacklist_token, create_user, get_current_user, login
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 

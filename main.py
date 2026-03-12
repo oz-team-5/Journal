@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager  # 비동기 자원을 안전하게 �
 import uvicorn
 from fastapi import FastAPI
 
-from app.api.routers import quote
+from app.api.routers import diary_api, quote
 from app.api.routers.auth import router as auth_router
 from app.api.routers.user import router as user_router
 from app.db.base import initialize_tortoise
@@ -31,9 +31,7 @@ async def lifespan(app: FastAPI):
     # 이렇게 하면 서버 부팅 속도에 영향을 주지않음
     logger.info("명언 데이터 동기화를 백그라운드에서 시작")
     asyncio.create_task(quote_scraper.fetch_and_save_quotes(max_pages=5))
-from app.api.routers import diary_api
 
-app = FastAPI()
     yield  # 서버 가동 (사용자 요청 수신)
 
     # [종료 시 작업]
