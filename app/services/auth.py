@@ -3,7 +3,7 @@ from typing import Annotated, Optional
 
 from fastapi import Depends, status
 from fastapi.exceptions import HTTPException
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
@@ -45,7 +45,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
             else timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         )
     else:
-        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
+        expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
