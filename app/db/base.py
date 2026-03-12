@@ -11,6 +11,8 @@ TORTOISE_MODELS = [
     "app.models.bookmark",
     "app.models.question",
     "app.models.user_question",
+    "aerich.models",
+    "app.models.auth"
 ]
 
 TORTOISE_ORM = {
