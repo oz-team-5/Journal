@@ -10,6 +10,7 @@ class Diary(models.Model):
     title = fields.CharField(max_length=200)
     content = fields.TextField(min_length=1)
     created_at = fields.DatetimeField(auto_now_add=True)
+    modified_at = fields.DatetimeField(auto_now=True)
 
     class Meta:
         table = "diaries"
