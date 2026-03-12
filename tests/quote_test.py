@@ -1,10 +1,9 @@
 import os
 
 import pytest
+from app.main import app
 from httpx import ASGITransport, AsyncClient
 from tortoise import Tortoise
-
-from app.main import app
 
 
 @pytest.fixture(scope="module", autouse=True)
