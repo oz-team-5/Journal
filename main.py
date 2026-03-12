@@ -1,9 +1,9 @@
 import uvicorn
 from fastapi import FastAPI
 
+from app.api.routers import quote
 from app.api.routers.auth import router as auth_router
 from app.api.routers.user import router as user_router
-from app.api.v1 import quote
 from app.db.base import initialize_tortoise
 from app.api.routers import diary_api
 
