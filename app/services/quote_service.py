@@ -21,29 +21,9 @@ class QuoteService:
     # 3. 웹에서 명언 동기화 (벌크 로직 통합)
     async def sync_quotes_from_web(self,max_pages:int = 3) -> int:
         # 스크래퍼를 통해 외부 데이터 긁어오기
-        scraped_data = await quote_scraper.fetch_and_save_quotes(max_pages)
+        new_count = await quote_scraper.fetch_and_save_quotes(max_pages)
+        return new_count
 
-        if not scraped_data:
-            return 0
-
-        # 중복 체크를 위해 현재 DB의 모든 명언 내용 가져오기 (성능 최적화)
-        scraped_contents = [item["content"] for item in scraped_data]
-        existing_contents = await Quote.filter(
-            content__in=scraped_contents
-        ).values_list("content", flat=True)
-
-        # 중복되지 않은 새 명언만 객체로 생성
-        new_quotes = [
-            Quote(content=item["content"], author=item["author"])
-            for item in scraped_data
-            if item["content"] not in existing_contents
-        ]
-
-        # 벌크 저장 실행
-        if new_quotes:
-            await Quote.bulk_create(new_quotes)
-
-        return len(new_quotes)
 
 
 quote_service = QuoteService()
