@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager  # 비동기 자원을 안전하게 �
 import uvicorn
 from fastapi import FastAPI
 
-from app.api.routers import diary_api, quote, bookmark
+from app.api.routers import diary_api, quote, bookmark,question
 from app.api.routers.auth import router as auth_router
 from app.api.routers.user import router as user_router
 from app.db.base import initialize_tortoise
@@ -47,6 +47,8 @@ app.include_router(user_router)
 app.include_router(quote.router)
 app.include_router(diary_api.router)
 app.include_router(bookmark.router)
+app.include_router(question.router)
+app.include_router(diary_api.router)
 
 
 # 5. DB 설정 초기화
