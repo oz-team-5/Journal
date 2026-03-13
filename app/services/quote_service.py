@@ -19,9 +19,9 @@ class QuoteService:
         return await Quote.all().offset(skip).limit(limit)
 
     # 3. 웹에서 명언 동기화 (벌크 로직 통합)
-    async def sync_quotes_from_web(self) -> int:
+    async def sync_quotes_from_web(self,max_pages:int = 3) -> int:
         # 스크래퍼를 통해 외부 데이터 긁어오기
-        scraped_data = await quote_scraper.scrape_korean_quotes()
+        scraped_data = await quote_scraper.fetch_and_save_quotes(max_pages)
 
         if not scraped_data:
             return 0

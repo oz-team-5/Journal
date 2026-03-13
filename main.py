@@ -46,11 +46,10 @@ app.include_router(auth_router)
 app.include_router(user_router)
 app.include_router(quote.router)
 
-# 5. DB 설정 초기화
-initialize_tortoise(app)
-app.include_router(quote.router, prefix="/api/v1")
 app.include_router(diary_api.router)
 
+# 5. DB 설정 초기화
+initialize_tortoise(app)
 
 if __name__ == "__main__":
     # 로컬 개발 환경 실행 설정
