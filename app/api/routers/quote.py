@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, status
 from app.schemas.quote import QuoteResponse
 from app.services.quote_service import quote_service
 
-router = APIRouter(prefix="/quotes", tags=["명언"])
+router = APIRouter(prefix="/quotes", tags=["quote"])
 
 
 @router.get("/random", response_model=QuoteResponse, summary="랜덤 명언 조회")

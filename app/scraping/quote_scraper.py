@@ -24,7 +24,7 @@ class QuoteScraper:
         async with httpx.AsyncClient() as client:
             headers = {"User-Agent": "Mozilla/5.0"}
 
-            for page in range(star_page, max_pages + 1):
+            for page in range(star_page, star_page + max_pages):
                 current_url = f"{self.base_url}?page={page}"
                 logger.info(f"{page}페이지 스캔 시작: {current_url}")
 
