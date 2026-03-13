@@ -9,8 +9,6 @@ TORTOISE_MODELS = [
     "app.models.diary",
     "app.models.quote",
     "app.models.bookmark",
-    "app.models.question",
-    "app.models.user_question",
     "aerich.models",
     "app.models.auth",
 ]
